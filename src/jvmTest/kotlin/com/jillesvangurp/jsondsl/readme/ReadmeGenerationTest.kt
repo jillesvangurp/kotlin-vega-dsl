@@ -1,6 +1,8 @@
 package com.jillesvangurp.jsondsl.readme
 
+import com.jillesvangurp.jsondsl.json
 import com.jillesvangurp.kotlin4example.SourceRepository
+import com.jillesvangurp.kotlinvegadsl.VegaSpec
 import java.io.File
 import kotlin.test.Test
 
@@ -9,7 +11,7 @@ const val githubLink = "https://github.com/formation-res/pg-docstore"
 val sourceGitRepository =
     SourceRepository(
         repoUrl = githubLink,
-        sourcePaths = setOf("src/commonMain/kotlin", "src/commonTest/kotlin", "src/jvmTest/kotlin")
+        sourcePaths = setOf("src/commonMain/kotlin", "src/commonTest/kotlin", "src/jvmTest/kotlin"),
     )
 
 class ReadmeGenerationTest {
@@ -23,7 +25,7 @@ class ReadmeGenerationTest {
 
         """.trimIndent().trimMargin() +
                     "\n\n" +
-                    readmeMd.value
+                    readmeMd.value,
             )
     }
 }
@@ -33,20 +35,18 @@ val readmeMd =
         includeMdFile("intro.md")
 
         section("Example") {
-            +"""
-            The main feature of [kotlin4example](https://github.com/jillesvangurp/kotlin4example) is of course integrating code samples into your documentation.   
-        """
-                .trimIndent()
-            subSection("Hello World") {
-                example { println("Hello World!") }
-                    .let {
-                        +"""
-                   And you can actually grab the output and show it in another code block:
-                """
-                            .trimIndent()
+            example {
+                VegaSpec().apply {
+                    title("Pie!") {
 
-                        mdCodeBlock(it.stdOut, type = "text")
                     }
+                }
+            }.let {
+                +"""
+                   Produces this json:
+                """.trimIndent()
+
+                mdCodeBlock(it.result.getOrThrow()!!.json(true), type = "application/json")
             }
         }
         includeMdFile("outro.md")

@@ -18,6 +18,12 @@ repositories {
             includeGroup("com.github.jillesvangurp")
         }
     }
+    maven("https://maven.tryformation.com/releases") {
+        // optional but it speeds up the gradle dependency resolution
+        content {
+            includeGroup("com.jillesvangurp")
+        }
+    }
 }
 
 kotlin {
@@ -48,6 +54,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation("com.jillesvangurp:json-dsl:_")
             }
         }
 
