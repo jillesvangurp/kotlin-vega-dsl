@@ -37,19 +37,8 @@ kotlin {
             }
         }
     }
-    linuxX64()
-    linuxArm64()
-    mingwX64()
-    macosX64()
-    macosArm64()
-    iosArm64()
-    iosSimulatorArm64()
-    iosX64()
-    iosSimulatorArm64()
     wasmJs {
         browser()
-        nodejs()
-        d8()
     }
     // blocked on kotest assertions wasm release
 //    wasmWasi()
@@ -111,13 +100,6 @@ kotlin {
         }
     }
 }
-
-tasks.named("iosSimulatorArm64Test") {
-    // requires IOS simulator and tens of GB of other stuff to be installed
-    // so keep it disabled
-    enabled = false
-}
-
 
 publishing {
     repositories {
