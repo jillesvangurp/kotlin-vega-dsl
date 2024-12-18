@@ -54,7 +54,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-                implementation("com.jillesvangurp:json-dsl:_")
+                api("com.jillesvangurp:json-dsl:_")
             }
         }
 
