@@ -69,7 +69,13 @@ fun main() {
             VegaLiteSpec.horizontalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
         )
         addSpec(
-            VegaLiteSpec.verticalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
+            VegaLiteSpec.verticalBarOrLine(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
+        )
+        addSpec(
+            VegaLiteSpec.verticalBarOrLine(listOf(4, 2, 1, 3), listOf("A", "B", "C", "D"), chartType = "line")
+        )
+        addSpec(
+            VegaLiteSpec.verticalBarOrLine(listOf(1, 2, 3, 4), listOf("2024-12-15T00:00:00Z", "2024-12-16T00:00:00Z", "2024-12-17T00:00:00Z", "2024-12-18T00:00:00Z"), chartType = "line", temporalCategory = true)
         )
 
         addVega {

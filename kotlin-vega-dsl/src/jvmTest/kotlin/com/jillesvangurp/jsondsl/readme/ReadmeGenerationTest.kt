@@ -72,7 +72,7 @@ val readmeMd =
                 mdCodeBlock(spec.json(true), type = "application/json")
             }
             example {
-                VegaLiteSpec.verticalBar(
+                VegaLiteSpec.verticalBarOrLine(
                     listOf(1, 4),
                     listOf("Pie I have Eaten", "Pie I have not eaten"),
                     title = "I like Pie!",

@@ -64,9 +64,18 @@ Produces this json:
     ]
   },
   "encoding": {
-    "theta": {"field": "value", "type": "quantitative", "stack": true},
-    "color": {"field": "category", "type": "nominal", "legend":{"title":null}}
-}
+    "theta": {
+      "field": "value",
+      "type": "quantitative",
+      "stack": true
+    },
+    "color": {
+      "field": "category",
+      "type": "nominal",
+      "legend": {
+      }
+    }
+  }
 }
 ```
 
@@ -103,15 +112,26 @@ Produces this json:
     ]
   },
   "encoding": {
-    "x": {"field": "value", "type": "quantitative"},
-    "y": {"field": "category", "type": "nominal"},
-    "color": {"field": "category", "type": "nominal", "legend":{"title":null}}
-}
+    "x": {
+      "field": "value",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "category",
+      "type": "nominal"
+    },
+    "color": {
+      "field": "category",
+      "type": "nominal",
+      "legend": {
+      }
+    }
+  }
 }
 ```
 
 ```kotlin
-VegaLiteSpec.verticalBar(
+VegaLiteSpec.verticalBarOrLine(
   listOf(1, 4),
   listOf("Pie I have Eaten", "Pie I have not eaten"),
   title = "I like Pie!",
@@ -143,10 +163,21 @@ Produces this json:
     ]
   },
   "encoding": {
-    "x": {"field": "category", "type": "nominal"},
-    "y": {"field": "value", "type": "quantitative"},
-    "color": {"field": "category", "type": "nominal", "legend":{"title":null}}
-}
+    "x": {
+      "field": "category",
+      "type": "nominal"
+    },
+    "y": {
+      "field": "value",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "category",
+      "type": "nominal",
+      "legend": {
+      }
+    }
+  }
 }
 ```
 
@@ -156,7 +187,9 @@ Vega DSL is a multi platform library. But of course it is intended to use with
 vega-embed, which is a kotlin-js library. You could probably get it working as part 
 of node.js as well and probably there is a web assembly compatible way of doing this as well.
                 
-To facilitate embedding in javascript, some minimal type mapping for the embed function in vega-embed is bundled.                               
+To facilitate embedding in javascript, some minimal type mapping for the embed 
+function in vega-embed is bundled. Here's an example from the demo module on how you 
+could use that with Kotlin's html DSL in kotlin-js.                                                
 
 ```kotlin
 fun TagConsumer<*>.addSpec(spec: VegaEmbeddable) {
@@ -196,7 +229,13 @@ fun main() {
       VegaLiteSpec.horizontalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
     )
     addSpec(
-      VegaLiteSpec.verticalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
+      VegaLiteSpec.verticalBarOrLine(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
+    )
+    addSpec(
+      VegaLiteSpec.verticalBarOrLine(listOf(4, 2, 1, 3), listOf("A", "B", "C", "D"), chartType = "line")
+    )
+    addSpec(
+      VegaLiteSpec.verticalBarOrLine(listOf(1, 2, 3, 4), listOf("2024-12-15T00:00:00Z", "2024-12-16T00:00:00Z", "2024-12-17T00:00:00Z", "2024-12-18T00:00:00Z"), chartType = "line", temporalCategory = true)
     )
 
     addVega {

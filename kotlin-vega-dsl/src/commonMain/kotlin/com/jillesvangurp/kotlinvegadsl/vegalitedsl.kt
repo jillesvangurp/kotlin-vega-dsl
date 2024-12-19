@@ -2,7 +2,6 @@ package com.jillesvangurp.kotlinvegadsl
 
 import com.jillesvangurp.jsondsl.JsonDsl
 import com.jillesvangurp.jsondsl.PropertyNamingConvention
-import com.jillesvangurp.jsondsl.RawJson
 import com.jillesvangurp.jsondsl.withJsonDsl
 
 @DslMarker
@@ -24,9 +23,9 @@ class VegaLiteSpec : JsonDsl(namingConvention = PropertyNamingConvention.AsIs), 
         }
     }
 
-    fun data(values: List<Number>, labels: List<String>) {
+    fun categoryAndValueData(values: List<Number>, categories: List<String>) {
         this["data"] = withJsonDsl {
-            this["values"] = labels.zip(values).map { (label, value) ->
+            this["values"] = categories.zip(values).map { (label, value) ->
                 withJsonDsl {
                     this["category"] = label
                     this["value"] = value
@@ -34,7 +33,6 @@ class VegaLiteSpec : JsonDsl(namingConvention = PropertyNamingConvention.AsIs), 
             }
         }
     }
-
 
     companion object {
         fun pie(values: List<Number>, categories: List<String>, donut: Boolean = false,title: String?=null): VegaLiteSpec {
@@ -47,55 +45,97 @@ class VegaLiteSpec : JsonDsl(namingConvention = PropertyNamingConvention.AsIs), 
                         this["innerRadius"] = 50
                     }
                 }
-                data(values, categories)
-                this["width"]="container"
-                this["height"]="container"
-                this["encoding"] = RawJson(
-                    """
-{
-    "theta": {"field": "value", "type": "quantitative", "stack": true},
-    "color": {"field": "category", "type": "nominal", "legend":{"title":null}}
-}
-""".trimIndent(),
-                )
+                categoryAndValueData(values, categories)
+
+                this["encoding"] = withJsonDsl {
+                    this["theta"] = withJsonDsl {
+                        this["field"] = "value"
+                        this["type"] = "quantitative"
+                        this["stack"] = true
+
+                    }
+                    this["color"] = withJsonDsl {
+                        this["field"] = "category"
+                        this["type"] = "nominal"
+                        this["legend"] = withJsonDsl {
+                            this["title"] = null
+                        }
+                    }
+                }
             }
         }
 
-        fun horizontalBar(values: List<Number>, categories: List<String>, title: String? = null): VegaLiteSpec {
+        fun horizontalBar(values: List<Number>, categories: List<String>, title: String? = null, categoryTitle: String?=null, valueTitle: String?=null, temporalCategory: Boolean=false): VegaLiteSpec {
             return VegaLiteSpec().apply {
                 title?.let {
                     this["title"] = title
                 }
                 mark("bar")
-                data(values, categories)
-                this["encoding"] = RawJson(
-                    """
-{
-    "x": {"field": "value", "type": "quantitative"},
-    "y": {"field": "category", "type": "nominal"},
-    "color": {"field": "category", "type": "nominal", "legend":{"title":null}}
-}
-""".trimIndent()
-                )
+                categoryAndValueData(values, categories)
+                this["encoding"] = withJsonDsl {
+                    this["x"] = withJsonDsl {
+                        this["field"] = "value"
+                        this["type"] = "quantitative"
+                        this["title"] = valueTitle
+                    }
+                    this["y"] = withJsonDsl {
+                        this["field"] = "category"
+                        if(temporalCategory) {
+                            this["type"] = "temporal"
+                            this["axis"] = withJsonDsl {
+                                this["format"] = "%Y-%m-%d"
+                            }
+                        } else {
+                            this["type"] = "nominal"
+                        }
+                        this["title"] = categoryTitle
+                    }
+                    this["color"] = withJsonDsl {
+                        this["field"] = "category"
+                        this["type"] = "nominal"
+                        this["legend"] = withJsonDsl {
+                            this["title"] = categoryTitle
+                        }
+                    }
+                }
             }
         }
 
-        fun verticalBar(values: List<Number>, categories: List<String>, title: String? = null): VegaLiteSpec {
+        fun verticalBarOrLine(values: List<Number>, categories: List<String>, title: String? = null, categoryTitle: String?=null, chartType:String="bar", valueTitle: String?=null,temporalCategory: Boolean=false): VegaLiteSpec {
             return VegaLiteSpec().apply {
                 title?.let {
                     this["title"] = title
                 }
-                mark("bar")
-                data(values, categories)
-                this["encoding"] = RawJson(
-                    """
-{
-    "x": {"field": "category", "type": "nominal"},
-    "y": {"field": "value", "type": "quantitative"},
-    "color": {"field": "category", "type": "nominal", "legend":{"title":null}}
-}
-""".trimIndent()
-                )
+                mark(chartType)
+                categoryAndValueData(values, categories)
+                this["encoding"] = withJsonDsl {
+                    this["x"] = withJsonDsl {
+                        this["field"] = "category"
+                        if(temporalCategory) {
+                            this["type"] = "temporal"
+                            this["axis"] = withJsonDsl {
+                                this["format"] = "%Y-%m-%d"
+                            }
+                        } else {
+                            this["type"] = "nominal"
+                        }
+                        this["title"] = categoryTitle
+                    }
+                    this["y"] = withJsonDsl {
+                        this["field"] = "value"
+                        this["type"] = "quantitative"
+                        this["title"] = valueTitle
+                    }
+                    if(chartType == "bar") {
+                        this["color"] = withJsonDsl {
+                            this["field"] = "category"
+                            this["type"] = "nominal"
+                            this["legend"] = withJsonDsl {
+                                this["title"] = categoryTitle
+                            }
+                        }
+                    }
+                }
             }
         }
     }
