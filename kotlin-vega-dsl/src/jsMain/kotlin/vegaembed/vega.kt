@@ -1,5 +1,6 @@
 @file:JsModule("vega-embed")
 @file:JsNonModule
+package vegaembed
 
 import org.w3c.dom.HTMLElement
 

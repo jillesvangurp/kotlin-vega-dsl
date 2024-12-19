@@ -23,30 +23,210 @@ And then you can add the dependency:
 
 ```kotlin
     // check the latest release tag for the latest version
-    implementation("com.jillesvangurp:kotlin-vega-dsl:1.x.y")
+    implementation("com.jillesvangurp:kotlin-vega-dsl:0.x.y")
 ```
 
-## Example
+## Examples
 
 ```kotlin
-VegaSpec().apply {
-  title("Pie!") {
-
-  }
-}
+VegaLiteSpec.pie(
+  listOf(1, 4),
+  listOf(
+    "Pie I have Eaten",
+    "Pie I have not eaten",
+  ),
+  title = "I like Pie!",
+)
 ```
 
 Produces this json:
 
 ```application/json
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "width": 300,
-  "height": 300,
-  "title": {
-    "text": "Pie!"
-  }
+  "$": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": "container",
+  "title": "I like Pie!",
+  "mark": {
+    "type": "arc",
+    "tooltip": true
+  },
+  "data": {
+    "values": [
+      {
+        "category": "Pie I have Eaten",
+        "value": 1
+      }, 
+      {
+        "category": "Pie I have not eaten",
+        "value": 4
+      }
+    ]
+  },
+  "encoding": {
+    "theta": {"field": "value", "type": "quantitative", "stack": true},
+    "color": {"field": "category", "type": "nominal", "legend":{"title":null}}
 }
+}
+```
+
+```kotlin
+VegaLiteSpec.horizontalBar(
+  listOf(1, 4),
+  listOf("Pie I have Eaten", "Pie I have not eaten"),
+  title = "I like Pie!",
+)
+```
+
+Produces this json:
+
+```application/json
+{
+  "$": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": "container",
+  "title": "I like Pie!",
+  "mark": {
+    "type": "bar",
+    "tooltip": true
+  },
+  "data": {
+    "values": [
+      {
+        "category": "Pie I have Eaten",
+        "value": 1
+      }, 
+      {
+        "category": "Pie I have not eaten",
+        "value": 4
+      }
+    ]
+  },
+  "encoding": {
+    "x": {"field": "value", "type": "quantitative"},
+    "y": {"field": "category", "type": "nominal"},
+    "color": {"field": "category", "type": "nominal", "legend":{"title":null}}
+}
+}
+```
+
+```kotlin
+VegaLiteSpec.verticalBar(
+  listOf(1, 4),
+  listOf("Pie I have Eaten", "Pie I have not eaten"),
+  title = "I like Pie!",
+)
+```
+
+Produces this json:
+
+```application/json
+{
+  "$": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": "container",
+  "title": "I like Pie!",
+  "mark": {
+    "type": "bar",
+    "tooltip": true
+  },
+  "data": {
+    "values": [
+      {
+        "category": "Pie I have Eaten",
+        "value": 1
+      }, 
+      {
+        "category": "Pie I have not eaten",
+        "value": 4
+      }
+    ]
+  },
+  "encoding": {
+    "x": {"field": "category", "type": "nominal"},
+    "y": {"field": "value", "type": "quantitative"},
+    "color": {"field": "category", "type": "nominal", "legend":{"title":null}}
+}
+}
+```
+
+## How to embed in kotlin-js
+
+Vega DSL is a multi platform library. But of course it is intended to use with 
+vega-embed, which is a kotlin-js library. You could probably get it working as part 
+of node.js as well and probably there is a web assembly compatible way of doing this as well.
+                
+To facilitate embedding in javascript, some minimal type mapping for the embed function in vega-embed is bundled.                               
+
+```kotlin
+fun TagConsumer<*>.addSpec(spec: VegaEmbeddable) {
+  val elementId = Random.nextULong().toString()
+  div {
+    id = "vegademo-$elementId"
+    style = "width: 400px; height: 400px; border: 1px solid;"
+  }
+  pre {
+    id = "preblock-$elementId"
+  }
+  val vegaElement = document.getElementById("vegademo-$elementId")!! as HTMLElement
+
+  embed(
+    vegaElement, spec.toJsObject(),
+    VegaConfig.config {
+      actions = false
+    }.toJsObject(),
+  )
+
+  val preEl = document.getElementById("preblock-$elementId")!! as HTMLPreElement
+  preEl.append(JSON.stringify(spec.toJsObject(), null, 2))
+}
+
+fun main() {
+  console.log("HI")
+  document.getElementById("target")?.append {
+    div {
+      h1 {
+        +"Vega Spec Demo"
+      }
+    }
+    addSpec(
+      VegaLiteSpec.pie(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
+    )
+    addSpec(
+      VegaLiteSpec.horizontalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
+    )
+    addSpec(
+      VegaLiteSpec.verticalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
+    )
+
+    addVega {
+      title("Horizontal Bar Chart")
+      table(
+        "pieslices",
+        listOf(4.0, 1.0),
+        listOf("Pie I have not Eaten", "Pie I have Eaten"),
+      ) {
+      }
+      ordinalColorScale("pieslices")
+      horizontalBarChartScales(dataSourceName = "pieslices")
+      horizontalBarChartMarks(dataSourceName = "pieslices")
+      simpleLegend()
+    }
+
+    addVega {
+      title("Pie Chart")
+      table(
+        "pieslices",
+        listOf(4.0, 1.0),
+        listOf("Pie I have not Eaten", "Pie I have Eaten"),
+      ) {
+        pieTransform()
+      }
+      ordinalColorScale("pieslices")
+      pieArcMarks("pieslices")
+      simpleLegend()
+    }
+  }
 ```
 
 ## Development status & goals

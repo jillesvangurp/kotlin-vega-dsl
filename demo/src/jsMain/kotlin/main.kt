@@ -18,6 +18,7 @@ import kotlinx.html.pre
 import kotlinx.html.style
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLPreElement
+import vegaembed.embed
 
 fun TagConsumer<*>.addVega(block: VegaSpec.() -> Unit) {
     val spec = VegaSpec.newSpec(block)
@@ -30,6 +31,7 @@ fun TagConsumer<*>.addVegaLite(block: VegaSpec.() -> Unit) {
     addSpec(spec)
 }
 
+// begin-addSpecExample
 fun TagConsumer<*>.addSpec(spec: VegaEmbeddable) {
     val elementId = Random.nextULong().toString()
     div {
@@ -39,11 +41,8 @@ fun TagConsumer<*>.addSpec(spec: VegaEmbeddable) {
     pre {
         id = "preblock-$elementId"
     }
-    console.log(elementId)
     val vegaElement = document.getElementById("vegademo-$elementId")!! as HTMLElement
-    console.log(vegaElement)
 
-//    console.log(spec)
     embed(
         vegaElement, spec.toJsObject(),
         VegaConfig.config {
@@ -53,9 +52,7 @@ fun TagConsumer<*>.addSpec(spec: VegaEmbeddable) {
 
     val preEl = document.getElementById("preblock-$elementId")!! as HTMLPreElement
     preEl.append(JSON.stringify(spec.toJsObject(), null, 2))
-    console.log("DONE")
 }
-
 
 fun main() {
     console.log("HI")
@@ -103,6 +100,7 @@ fun main() {
             simpleLegend()
         }
     }
+// end-addSpecExample
 
 
 //    val vegaElement = document.getElementById("vegademo")!! as HTMLElement
