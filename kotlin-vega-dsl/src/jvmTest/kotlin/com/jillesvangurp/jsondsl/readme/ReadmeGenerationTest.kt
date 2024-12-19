@@ -18,7 +18,7 @@ class ReadmeGenerationTest {
 
     @Test
     fun `generate docs`() {
-        File(".", "README.md")
+        File("..", "README.md")
             .writeText(
                 """
             # JsonDsl

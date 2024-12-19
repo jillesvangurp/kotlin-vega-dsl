@@ -1,6 +1,6 @@
 # JsonDsl
 
-This project implements a Kotlin DSL for Vega that can be used with vega-embed to render vega charts in a kotlin-js browser application.
+This project implements a Kotlin DSL for vega and vega-lite that can be used with vega-embed to render vega charts in a kotlin-js browser application. The main challenge is that vega-embed expects to be called with a complex javascript object based on it's JSON DSL. Constructing such objects from kotlin requires a bit of convenience. This library uses my json-dsl library to doing that easier. 
 
 ## Gradle
 
@@ -41,6 +41,8 @@ Produces this json:
 ```application/json
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 300,
+  "height": 300,
   "title": {
     "text": "Pie!"
   }
@@ -49,10 +51,10 @@ Produces this json:
 
 ## Development status & goals
 
-This is a project that is under construction. I'm using it for a project and adding features as I go. 
-I'll update the README once this changes but not looking for a lot of active contributions and I may change this
-quite a bit for now.
+This is a project that is **under construction**. I'm using it for a project and adding features as I go and my intention is certainly not to cover the full feature set of vega.
 
-Even though this supports only the bare minimum of Vega features currently, the main point is that it uses [json-dsl](https://github.com/jillesvangurp/json-dsl), which makes it really easy to add stuff to the Json via raw json string literals, manipulating the underlying map, and using e.g. lists or maps in Kotlin. Proper model classes will be added and expanded over time on a need to have basis. But it's useful even before I do that.
+I'll update the README once this changes but I'm not looking for a lot of active contributions and I may change this quite a bit for now.
+
+Even though this supports only the bare minimum of Vega features currently, the main point is that it uses [json-dsl](https://github.com/jillesvangurp/json-dsl), which makes it really easy to add stuff to the Json via raw json string literals, manipulating the underlying map, and using e.g. lists or maps in Kotlin. Proper model classes may be added and expanded over time on a need to have basis. But it's useful to me even before I do that.
 
 
