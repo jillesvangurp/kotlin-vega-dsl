@@ -5,7 +5,11 @@ import com.jillesvangurp.jsondsl.PropertyNamingConvention
 import com.jillesvangurp.jsondsl.RawJson
 import com.jillesvangurp.jsondsl.withJsonDsl
 
-class VegaLiteSpec() : JsonDsl(namingConvention = PropertyNamingConvention.AsIs) {
+@DslMarker
+annotation class VegaLiteDSLMarker
+
+@VegaLiteDSLMarker
+class VegaLiteSpec : JsonDsl(namingConvention = PropertyNamingConvention.AsIs), VegaEmbeddable {
     val schema by property("${'$'}", "https://vega.github.io/schema/vega-lite/v5.json")
 
     // set dimensions from the outside on the embedding container

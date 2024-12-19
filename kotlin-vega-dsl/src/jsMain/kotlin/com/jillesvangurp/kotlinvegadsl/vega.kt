@@ -1,17 +1,15 @@
 package com.jillesvangurp.kotlinvegadsl
 
-import com.jillesvangurp.jsondsl.toJsObject
+import com.jillesvangurp.jsondsl.JsonDsl
 
-fun VegaSpec.Companion.newSpec(block: VegaSpec.() -> Unit): dynamic {
-    return VegaSpec().apply(block).toJsObject()
+fun VegaSpec.Companion.newSpec(block: VegaSpec.() -> Unit): VegaEmbeddable {
+    return VegaSpec().apply(block)
 }
 
-fun VegaLiteSpec.Companion.newSpec(block: VegaLiteSpec.() -> Unit): dynamic {
-    return VegaLiteSpec().apply(block).toJsObject()
+fun VegaLiteSpec.Companion.newSpec(block: VegaLiteSpec.() -> Unit): VegaEmbeddable {
+    return VegaLiteSpec().apply(block)
 }
 
-
-fun VegaConfig.Companion.config(block: VegaConfig.() -> Unit): dynamic {
-    return VegaConfig().apply(block).toJsObject()
-
+fun VegaConfig.Companion.config(block: VegaConfig.() -> Unit): JsonDsl {
+    return VegaConfig().apply(block)
 }

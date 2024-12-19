@@ -35,7 +35,7 @@ class Data : JsonDsl(namingConvention = PropertyNamingConvention.AsIs) {
 }
 
 @VegaDSLMarker
-class VegaSpec : JsonDsl(namingConvention = PropertyNamingConvention.AsIs) {
+class VegaSpec : JsonDsl(namingConvention = PropertyNamingConvention.AsIs), VegaEmbeddable {
     // immutable
     val schema by property("${'$'}schema", "https://vega.github.io/schema/vega/v5.json")
 

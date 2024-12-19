@@ -1,9 +1,11 @@
 import com.jillesvangurp.jsondsl.toJsObject
 import com.jillesvangurp.kotlinvegadsl.VegaConfig
+import com.jillesvangurp.kotlinvegadsl.VegaEmbeddable
 import com.jillesvangurp.kotlinvegadsl.VegaLiteSpec
 import com.jillesvangurp.kotlinvegadsl.VegaSpec
 import com.jillesvangurp.kotlinvegadsl.config
 import com.jillesvangurp.kotlinvegadsl.newSpec
+import com.jillesvangurp.kotlinvegadsl.toJsObject
 import kotlin.random.Random
 import kotlin.random.nextULong
 import kotlinx.browser.document
@@ -24,10 +26,11 @@ fun TagConsumer<*>.addVega(block: VegaSpec.() -> Unit) {
 
 fun TagConsumer<*>.addVegaLite(block: VegaSpec.() -> Unit) {
     val spec = VegaSpec.newSpec(block)
+
     addSpec(spec)
 }
 
-fun TagConsumer<*>.addSpec(spec: dynamic) {
+fun TagConsumer<*>.addSpec(spec: VegaEmbeddable) {
     val elementId = Random.nextULong().toString()
     div {
         id = "vegademo-$elementId"
@@ -40,16 +43,16 @@ fun TagConsumer<*>.addSpec(spec: dynamic) {
     val vegaElement = document.getElementById("vegademo-$elementId")!! as HTMLElement
     console.log(vegaElement)
 
-    console.log(spec)
+//    console.log(spec)
     embed(
-        vegaElement, spec,
+        vegaElement, spec.toJsObject(),
         VegaConfig.config {
             actions = false
-        },
+        }.toJsObject(),
     )
 
     val preEl = document.getElementById("preblock-$elementId")!! as HTMLPreElement
-    preEl.append(JSON.stringify(spec, null, 2))
+    preEl.append(JSON.stringify(spec.toJsObject(), null, 2))
     console.log("DONE")
 }
 
@@ -63,13 +66,13 @@ fun main() {
             }
         }
         addSpec(
-            VegaLiteSpec.pie(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D")).toJsObject()
+            VegaLiteSpec.pie(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
         )
         addSpec(
-            VegaLiteSpec.horizontalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D")).toJsObject()
+            VegaLiteSpec.horizontalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
         )
         addSpec(
-            VegaLiteSpec.verticalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D")).toJsObject()
+            VegaLiteSpec.verticalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D"))
         )
 
         addVega {
