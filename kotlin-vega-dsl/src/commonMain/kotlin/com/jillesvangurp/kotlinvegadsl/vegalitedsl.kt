@@ -5,9 +5,12 @@ import com.jillesvangurp.jsondsl.PropertyNamingConvention
 import com.jillesvangurp.jsondsl.RawJson
 import com.jillesvangurp.jsondsl.withJsonDsl
 
-
 class VegaLiteSpec() : JsonDsl(namingConvention = PropertyNamingConvention.AsIs) {
     val schema by property("${'$'}", "https://vega.github.io/schema/vega-lite/v5.json")
+
+    // set dimensions from the outside on the embedding container
+    val width by property("width","container")
+    val height by property("height","container")
 
     fun mark(type: String, tooltip: Boolean = true, block: (JsonDsl.() -> Unit)?=null) {
         this["mark"] = withJsonDsl {
@@ -61,8 +64,6 @@ class VegaLiteSpec() : JsonDsl(namingConvention = PropertyNamingConvention.AsIs)
                 }
                 mark("bar")
                 data(values, categories)
-                this["width"] = "container"
-                this["height"] = "container"
                 this["encoding"] = RawJson(
                     """
 {
@@ -82,8 +83,6 @@ class VegaLiteSpec() : JsonDsl(namingConvention = PropertyNamingConvention.AsIs)
                 }
                 mark("bar")
                 data(values, categories)
-                this["width"] = "container"
-                this["height"] = "container"
                 this["encoding"] = RawJson(
                     """
 {
