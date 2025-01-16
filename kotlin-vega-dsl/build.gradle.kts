@@ -22,6 +22,7 @@ repositories {
         // optional but it speeds up the gradle dependency resolution
         content {
             includeGroup("com.jillesvangurp")
+            includeGroup("com.github.jillesvangurp")
         }
     }
 }
@@ -54,7 +55,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-                api("com.jillesvangurp:kotlin-vega-dsl:_")
+                api("com.jillesvangurp:json-dsl:_")
             }
         }
 
