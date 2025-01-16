@@ -54,7 +54,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-                api("com.jillesvangurp:json-dsl:_")
+                api("com.jillesvangurp:kotlin-vega-dsl:_")
             }
         }
 
@@ -109,6 +109,35 @@ kotlin {
 }
 
 publishing {
+    publications {
+        withType<MavenPublication> {
+            pom {
+                url.set("https://github.com/jillesvangurp/kotlin-vega-dsl")
+
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://github.com/jillesvangurp/kotlin-vega-dsl/blob/master/LICENSE")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("jillesvangurp")
+                        name.set("Jilles van Gurp")
+                        email.set("jilles@no-reply.github.com")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:git://github.com/jillesvangurp/kotlin-vega-dsl.git")
+                    developerConnection.set("scm:git:ssh://github.com:jillesvangurp/kotlin-vega-dsl.git")
+                    url.set("https://github.com/jillesvangurp/kotlin-vega-dsl")
+                }
+            }
+        }
+    }
+
     repositories {
         maven {
             // GOOGLE_APPLICATION_CREDENTIALS env var must be set for this to work
