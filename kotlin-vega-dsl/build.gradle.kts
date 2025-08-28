@@ -4,6 +4,8 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsPlugin
 
 plugins {
     kotlin("multiplatform")
@@ -31,7 +33,7 @@ kotlin {
     jvm {
         // should work for android as well
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
+            jvmTarget = JvmTarget.JVM_21
         }
     }
     js(IR) {
@@ -101,8 +103,8 @@ kotlin {
 
         all {
             languageSettings {
-                languageVersion = "1.9"
-                apiVersion = "1.9"
+                languageVersion = "2.2"
+                apiVersion = "2.2"
             }
             languageSettings.optIn("kotlin.RequiresOptIn")
         }

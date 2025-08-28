@@ -4,6 +4,7 @@ package vegaembed
 
 import org.w3c.dom.HTMLElement
 
+@JsName("default")
 external fun embed(
     element: HTMLElement,
     spec: dynamic,
