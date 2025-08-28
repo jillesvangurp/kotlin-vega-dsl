@@ -6,7 +6,7 @@ import com.jillesvangurp.kotlinvegadsl.VegaLiteSpec
 import java.io.File
 import kotlin.test.Test
 
-const val githubLink = "https://github.com/formation-res/pg-docstore"
+const val githubLink = "https://github.com/jillesvangurp/kotlin-vega-dsl"
 
 val sourceGitRepository =
     SourceRepository(
