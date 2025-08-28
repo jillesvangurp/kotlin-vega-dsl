@@ -1,6 +1,12 @@
 # JsonDsl
 
-This project implements a Kotlin DSL for vega and vega-lite that can be used with vega-embed to render vega charts in a kotlin-js browser application. The main challenge is that vega-embed expects to be called with a complex javascript object based on it's JSON DSL. Constructing such objects from kotlin requires a bit of convenience. This library uses my json-dsl library to doing that easier. 
+This project implements a Kotlin DSL for vega and vega-lite that can be used with vega-embed to render vega charts in a kotlin-js browser application. 
+
+The main challenge is that vega-embed expects to be called with a complex javascript object based on it's JSON DSL. Constructing such objects from kotlin requires a bit of convenience.
+
+This library uses my [json-dsl](https://github.com/jillesvangurp/json-dsl) library which is designed exactly for this problem. It uses a kotlin delegates to manipulate a `Map`. So the included vega dsl provides a limited amount of support for vega via model classes. But since you can just work around whatever is missing by manipulating the underlying `Map` it supports pretty much everything vega has to offer. And a lot of what `json-dsl` does makes using bridging bog standard Kotlin types with JSON really easy.
+
+Check the examples below for how this works.
 
 ## Gradle
 
@@ -270,10 +276,12 @@ fun main() {
 
 ## Development status & goals
 
-This is a project that is **under construction**. I'm using it for a project and adding features as I go and my intention is certainly not to cover the full feature set of vega.
+This is a project that is **under construction**. I'm using it for one of our internal projects and I'm adding features as I go. My intention is certainly not to cover the full feature set of vega. This should not be needed with my `json-dsl`.
 
-I'll update the README once this changes but I'm not looking for a lot of active contributions and I may change this quite a bit for now.
+I'll update the README once this changes. But I'm not looking for a lot of active contributions and I may change this quite a bit for now.
 
-Even though this supports only the bare minimum of Vega features currently, the main point is that it uses [json-dsl](https://github.com/jillesvangurp/json-dsl), which makes it really easy to add stuff to the Json via raw json string literals, manipulating the underlying map, and using e.g. lists or maps in Kotlin. Proper model classes may be added and expanded over time on a need to have basis. But it's useful to me even before I do that.
+Even though this supports only a bare minimum of Vega features currently, the main point is that it uses [json-dsl](https://github.com/jillesvangurp/json-dsl), which makes it really easy to add stuff to the Json via raw json string literals, manipulating the underlying map, and using e.g. lists or maps in Kotlin. 
+
+Proper model classes may be added and expanded over time on a need to have basis. But it's useful to me even before I do that.
 
 
