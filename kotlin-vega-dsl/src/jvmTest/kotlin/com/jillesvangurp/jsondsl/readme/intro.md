@@ -1,3 +1,5 @@
+[![CI](https://github.com/jillesvangurp/kotlin-vega-dsl/actions/workflows/pr_master.yaml/badge.svg)](https://github.com/jillesvangurp/kotlin-vega-dsl/actions/workflows/pr_master.yaml)
+
 This project implements a Kotlin DSL for vega and vega-lite that can be used with vega-embed to render vega charts in a kotlin-js browser application. 
 
 The main challenge is that vega-embed expects to be called with a complex javascript object based on it's JSON DSL. Constructing such objects from kotlin requires a bit of convenience.
