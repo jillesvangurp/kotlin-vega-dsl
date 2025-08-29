@@ -77,7 +77,10 @@ kotlin {
         }
         jvmTest {
             dependencies {
-                implementation("org.junit.jupiter:junit-jupiter:_")
+                implementation(kotlin("test-junit5", "_"))
+                implementation(Testing.junit.jupiter.api)
+                implementation(Testing.junit.jupiter.engine)
+
                 runtimeOnly("org.junit.platform:junit-platform-launcher")
             }
         }
@@ -151,6 +154,8 @@ publishing {
         }
     }
 }
+
+
 
 tasks.withType<Test> {
     useJUnitPlatform()

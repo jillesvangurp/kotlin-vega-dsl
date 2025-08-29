@@ -47,7 +47,7 @@ kotlin {
 
         commonMain {
             dependencies {
-                implementation(project(":kotlin-vega-dsl"))
+                implementation(project(":kotlin-echarts-dsl"))
                 implementation(kotlin("stdlib-common"))
             }
         }

@@ -1,4 +1,4 @@
-rootProject.name = "kotlin-vega"
+rootProject.name = "kotlin-echarts"
 
 pluginManagement {
     repositories {
@@ -12,4 +12,4 @@ plugins {
 
 refreshVersions {
 }
-include("kotlin-vega-dsl", "demo")
+include("kotlin-echarts-dsl", "demo")

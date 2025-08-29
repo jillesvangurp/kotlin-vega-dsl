@@ -1,11 +1,10 @@
 import com.jillesvangurp.jsondsl.toJsObject
-import com.jillesvangurp.jsondsl.withJsonDsl
-import com.jillesvangurp.kotlinvegadsl.EChartsOption
-import com.jillesvangurp.kotlinvegadsl.jsObject
+import com.jillesvangurp.kotlinechartsdsl.EChartsOption
 import echarts.init
 import kotlin.random.Random
 import kotlin.random.nextULong
 import kotlinx.browser.document
+import kotlinx.browser.window
 import kotlinx.html.TagConsumer
 import kotlinx.html.div
 import kotlinx.html.dom.append
@@ -17,41 +16,87 @@ import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLPreElement
 
 // begin-addSpecExample
-fun TagConsumer<*>.addSpec(option: EChartsOption) {
+fun TagConsumer<*>.addSpec(option: EChartsOption, debug: Boolean = false) {
     val elementId = Random.nextULong().toString()
-    div {
-        id = "echart-$elementId"
-        style = "width: 400px; height: 400px; border: 1px solid;"
+    try {
+        div {
+            id = "echart-$elementId"
+            style = "width: 400px; height: 400px; border: 1px solid;"
+        }
+        if (debug) {
+            pre {
+                +JSON.stringify(option.toJsObject(), null, 2)
+            }
+        }
+        window.requestAnimationFrame {
+            val chartElement = document.getElementById("echart-$elementId")!! as HTMLDivElement
+            console.log(chartElement)
+            val chart = init(chartElement)
+            chart.setOption(option.toJsObject())
+        }
+    } catch (e: Exception) {
+        console.error(e)
     }
-    pre { id = "preblock-$elementId" }
-    val chartElement = document.getElementById("echart-$elementId")!! as HTMLDivElement
-    val chart = init(chartElement)
-    chart.setOption(option.jsObject())
-    val preEl = document.getElementById("preblock-$elementId")!! as HTMLPreElement
-    preEl.append(JSON.stringify(option.jsObject(), null, 2))
 }
 
 fun main() {
     console.log("HI")
     document.getElementById("target")?.append {
         div { h1 { +"ECharts Spec Demo" } }
-        addSpec(EChartsOption.pie(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D")))
-//        addSpec(EChartsOption.horizontalBar(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D")))
-//        addSpec(EChartsOption.verticalBarOrLine(listOf(1, 2, 3, 4), listOf("A", "B", "C", "D")))
-//        addSpec(EChartsOption.verticalBarOrLine(listOf(4, 2, 1, 3), listOf("A", "B", "C", "D"), chartType = "line"))
-//        addSpec(
-//            EChartsOption.verticalBarOrLine(
-//                listOf(1, 2, 3, 4),
-//                listOf(
-//                    "2024-12-15T00:00:00Z",
-//                    "2024-12-16T00:00:00Z",
-//                    "2024-12-17T00:00:00Z",
-//                    "2024-12-18T00:00:00Z",
-//                ),
-//                chartType = "line",
-//                temporalCategory = true,
-//            ),
-//        )
+        div {
+            style = "display:flex; flex-flow: row wrap; gap:12px; align-items:flex-start; margin:0;"
+            addSpec(
+                EChartsOption.pie(
+                    values = listOf(1, 5, 30, 300),
+                    categories = listOf("A", "B", "C", "D"),
+                    title = "I like pie!",
+                ),
+            )
+            addSpec(
+                EChartsOption.pie(
+                    values = listOf(1, 5, 30, 300),
+                    categories = listOf("A", "B", "C", "D"),
+                    title = "... and donuts",
+                    donut = true,
+                ),
+            )
+            addSpec(
+                EChartsOption.horizontalBar(
+                    values = listOf(1, 2, 3, 4),
+                    categories = listOf("A", "B", "C", "D"),
+                    title = "Bar Chars",
+                ),
+            )
+            addSpec(
+                EChartsOption.verticalBarOrLine(
+                    values = listOf(1, 2, 3, 4),
+                    categories = listOf("A", "B", "C", "D"),
+                    title = "Vertical Bar",
+                ),
+            )
+            addSpec(
+                EChartsOption.verticalBarOrLine(
+                    values = listOf(4, 2, 1, 3),
+                    categories = listOf("A", "B", "C", "D"),
+                    chartType = "line",
+                    title = "Line Chart",
+                ),
+            )
+            addSpec(
+                EChartsOption.verticalBarOrLine(
+                    values = listOf(6, 2, 3, 1),
+                    categories = listOf(
+                        "2024-12-15T00:00:00Z",
+                        "2024-12-16T00:00:00Z",
+                        "2024-12-17T00:00:00Z",
+                        "2024-12-18T00:00:00Z",
+                    ),
+                    chartType = "line",
+                    temporalCategory = true,
+                    title = "Line Chart with times",
+                ),
+            )
+        }
     }
 }
 // end-addSpecExample
