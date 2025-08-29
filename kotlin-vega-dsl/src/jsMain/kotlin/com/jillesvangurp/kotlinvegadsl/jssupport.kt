@@ -2,7 +2,7 @@ package com.jillesvangurp.kotlinvegadsl
 
 import com.jillesvangurp.jsondsl.toJsObject
 
-fun VegaEmbeddable.toJsObject(): dynamic {
+fun VegaEmbeddable.jsObject(): dynamic {
     return when(this) {
         is VegaSpec -> this.toJsObject()
         is VegaLiteSpec -> this.toJsObject()

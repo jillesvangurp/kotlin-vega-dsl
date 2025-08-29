@@ -1,14 +1,16 @@
 @file:JsModule("echarts")
-@file:JsNonModule
 package echarts
 
-import org.w3c.dom.HTMLElement
+import org.w3c.dom.HTMLDivElement
 
-external object echarts {
-    fun init(dom: HTMLElement): EChartsInstance
+//@JsName("default")
+external fun init(
+    dom: HTMLDivElement,
+    theme: dynamic = definedExternally,
+    opts: dynamic = definedExternally,
+): ECharts
+
+external interface ECharts {
+    fun setOption(option: dynamic, notMerge: Boolean = definedExternally, lazyUpdate: Boolean = definedExternally)
+    fun dispose()
 }
-
-external interface EChartsInstance {
-    fun setOption(option: dynamic)
-}
-
