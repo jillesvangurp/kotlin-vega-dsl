@@ -77,15 +77,22 @@ kotlin {
         }
         jvmTest {
             dependencies {
-                implementation("com.github.jillesvangurp:kotlin4example:_")
-                implementation("org.junit.jupiter:junit-jupiter:_")
+                implementation(kotlin("test-junit5", "_"))
+                implementation(Testing.junit.jupiter.api)
+                implementation(Testing.junit.jupiter.engine)
+
                 runtimeOnly("org.junit.platform:junit-platform-launcher")
+
+                implementation("com.github.jillesvangurp:kotlin4example:_")
+
             }
         }
 
         jsMain  {
             dependencies {
                 implementation(kotlin("stdlib-js"))
+                // apache echarts for javascript rendering
+                implementation(npm("echarts", "_"))
             }
         }
 
@@ -150,6 +157,8 @@ publishing {
         }
     }
 }
+
+
 
 tasks.withType<Test> {
     useJUnitPlatform()

@@ -7,7 +7,7 @@ plugins {
 }
 
 allprojects {
-    // needed because kotlin-js insists on 22.0.0 by default, and vega requires something newer
+    // needed because kotlin-js insists on 22.0.0 by default
     plugins.withType<NodeJsPlugin> {
         // keep this version up to date with whatever the latest lts is
         the<NodeJsEnvSpec>().version = "22.12.0"

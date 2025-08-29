@@ -2,7 +2,7 @@ package com.jillesvangurp.jsondsl.readme
 
 import com.jillesvangurp.jsondsl.json
 import com.jillesvangurp.kotlin4example.SourceRepository
-import com.jillesvangurp.kotlinvegadsl.VegaLiteSpec
+import com.jillesvangurp.kotlinechartsdsl.EChartsOption
 import java.io.File
 import kotlin.test.Test
 
@@ -41,7 +41,7 @@ val readmeMd =
 
         section("Examples") {
             example {
-                VegaLiteSpec.pie(
+                EChartsOption.pie(
                     listOf(1, 4),
                     listOf(
                         "Pie I have Eaten",
@@ -58,7 +58,7 @@ val readmeMd =
                 mdCodeBlock(spec.json(true), type = "application/json")
             }
             example {
-                VegaLiteSpec.horizontalBar(
+                EChartsOption.horizontalBar(
                     listOf(1, 4),
                     listOf("Pie I have Eaten", "Pie I have not eaten"),
                     title = "I like Pie!",
@@ -72,7 +72,7 @@ val readmeMd =
                 mdCodeBlock(spec.json(true), type = "application/json")
             }
             example {
-                VegaLiteSpec.verticalBarOrLine(
+                EChartsOption.verticalBarOrLine(
                     listOf(1, 4),
                     listOf("Pie I have Eaten", "Pie I have not eaten"),
                     title = "I like Pie!",
