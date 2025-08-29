@@ -65,11 +65,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-js"))
                 implementation("org.jetbrains.kotlinx:kotlinx-html:_")
-
-                // vega
-                implementation(npm("vega", "_"))
-                implementation(npm("vega-lite", "_"))
-                implementation(npm("vega-embed", "_"))
+                // apache echarts
+                implementation(npm("echarts", "_"))
 
             }
         }

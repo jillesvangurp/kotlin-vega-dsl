@@ -77,7 +77,6 @@ kotlin {
         }
         jvmTest {
             dependencies {
-                implementation("com.github.jillesvangurp:kotlin4example:_")
                 implementation("org.junit.jupiter:junit-jupiter:_")
                 runtimeOnly("org.junit.platform:junit-platform-launcher")
             }
@@ -86,6 +85,8 @@ kotlin {
         jsMain  {
             dependencies {
                 implementation(kotlin("stdlib-js"))
+                // apache echarts for javascript rendering
+                implementation(npm("echarts", "_"))
             }
         }
 
