@@ -82,6 +82,9 @@ kotlin {
                 implementation(Testing.junit.jupiter.engine)
 
                 runtimeOnly("org.junit.platform:junit-platform-launcher")
+
+                implementation("com.github.jillesvangurp:kotlin4example:_")
+
             }
         }
 
