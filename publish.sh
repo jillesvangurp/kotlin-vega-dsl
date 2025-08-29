@@ -13,7 +13,7 @@ echo $1 | grep -E -q '^[0-9]+\.[0-9]+(\.[0-9]+).*?$' || die "Semantic Version ar
 
 export TAG=$1
 
-gradle -Pversion="$TAG" :kotlin-vega-dsl:publish
+gradle -Pversion="$TAG" :kotlin-echarts-dsl:publish
 
 echo "tagging"
 git tag "$TAG"

@@ -6,7 +6,7 @@ import com.jillesvangurp.kotlinechartsdsl.EChartsOption
 import java.io.File
 import kotlin.test.Test
 
-const val githubLink = "https://github.com/jillesvangurp/kotlin-vega-dsl"
+const val githubLink = "https://github.com/jillesvangurp/kotlin-echarts-dsl"
 
 val sourceGitRepository =
     SourceRepository(

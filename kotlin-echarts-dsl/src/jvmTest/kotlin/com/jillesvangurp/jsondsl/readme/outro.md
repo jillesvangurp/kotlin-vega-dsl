@@ -1,6 +1,6 @@
 ## Development status & goals
 
-This is a project that is **under construction**. I'm using it for one of our internal projects and I'm adding features as I go. My intention is certainly not to cover the full feature set of vega. This should not be needed with my `json-dsl`.
+This is a project that is **under construction**. I'm using it for one of our internal projects and I'm adding features as I go. My intention is certainly not to cover the full feature set of Apache Echarts. This should not be needed with my `json-dsl`.
 
 I'll update the README once this changes. But I'm not looking for a lot of active contributions and I may change this quite a bit for now.
 

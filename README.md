@@ -1,15 +1,15 @@
 # JsonDsl
 
-[![CI](https://github.com/jillesvangurp/kotlin-vega-dsl/actions/workflows/pr_master.yaml/badge.svg)](https://github.com/jillesvangurp/kotlin-vega-dsl/actions/workflows/pr_master.yaml)
+[![CI](https://github.com/jillesvangurp/kotlin-echarts-dsl/actions/workflows/pr_master.yaml/badge.svg)](https://github.com/jillesvangurp/kotlin-echarts-dsl/actions/workflows/pr_master.yaml)
 
-This project implements a Kotlin DSL for vega and [Apache Echarts](https://echarts.apache.org/) that can be used to
+This project implements a Kotlin DSL for [Apache Echarts](https://echarts.apache.org/) that can be used to
 render charts in a kotlin-js browser application.
 
 The main challenge is that Apache Echarts expects to be called with a complex javascript object based on it's JSON DSL. Constructing such objects from kotlin requires a bit of convenience.
 
 This library uses my [json-dsl](https://github.com/jillesvangurp/json-dsl) library which is designed exactly for this
-problem. It uses a kotlin delegates to manipulate a `Map`. So the included vega dsl provides a limited amount of support for Apache Echarts via model classes. But since you can just work around whatever is missing by manipulating the underlying `Map`
-it supports pretty much everything vega has to offer. And a lot of what `json-dsl` does makes using bridging bog
+problem. It uses a kotlin delegates to manipulate a `Map`. So the included DSL provides a limited amount of support for Apache Echarts via model classes. But since you can just work around whatever is missing by manipulating the underlying `Map`
+it supports pretty much everything Apache Echarts has to offer. And a lot of what `json-dsl` does makes using bridging bog
 standard Kotlin types with JSON really easy.
 
 Check the examples below for how this works.
@@ -35,19 +35,19 @@ And then you can add the dependency:
 
 ```kotlin
     // check the latest release tag for the latest version
-implementation("com.jillesvangurp:kotlin-echarts-dsl:0.x.y")
+    implementation("com.jillesvangurp:kotlin-echarts-dsl:0.x.y")
 ```
 
 ## Examples
 
 ```kotlin
 EChartsOption.pie(
-    listOf(1, 4),
-    listOf(
-        "Pie I have Eaten",
-        "Pie I have not eaten",
-    ),
-    title = "I like Pie!",
+  listOf(1, 4),
+  listOf(
+    "Pie I have Eaten",
+    "Pie I have not eaten",
+  ),
+  title = "I like Pie!",
 )
 ```
 
@@ -110,9 +110,9 @@ Produces this json:
 
 ```kotlin
 EChartsOption.horizontalBar(
-    listOf(1, 4),
-    listOf("Pie I have Eaten", "Pie I have not eaten"),
-    title = "I like Pie!",
+  listOf(1, 4),
+  listOf("Pie I have Eaten", "Pie I have not eaten"),
+  title = "I like Pie!",
 )
 ```
 
@@ -175,9 +175,9 @@ Produces this json:
 
 ```kotlin
 EChartsOption.verticalBarOrLine(
-    listOf(1, 4),
-    listOf("Pie I have Eaten", "Pie I have not eaten"),
-    title = "I like Pie!",
+  listOf(1, 4),
+  listOf("Pie I have Eaten", "Pie I have not eaten"),
+  title = "I like Pie!",
 )
 ```
 
@@ -238,114 +238,108 @@ Produces this json:
 
 ## How to embed in kotlin-js
 
-Vega DSL is a multi platform library. But of course it is intended to use with
-vega-embed, which is a kotlin-js library. You could probably get it working as part
+Vega DSL is a multi platform library. But of course it is intended to use with 
+vega-embed, which is a kotlin-js library. You could probably get it working as part 
 of node.js as well and probably there is a web assembly compatible way of doing this as well.
-
-To facilitate embedding in javascript, some minimal type mapping for the embed
-function in vega-embed is bundled. Here's an example from the demo module on how you
-could use that with Kotlin's html DSL in kotlin-js.
+                
+To facilitate embedding in javascript, some minimal type mapping for the embed 
+function in vega-embed is bundled. Here's an example from the demo module on how you 
+could use that with Kotlin's html DSL in kotlin-js.                                                
 
 ```kotlin
 fun TagConsumer<*>.addSpec(option: EChartsOption, debug: Boolean = false) {
-    val elementId = Random.nextULong().toString()
-    try {
-        div {
-            id = "echart-$elementId"
-            style = "width: 400px; height: 400px; border: 1px solid;"
-        }
-        if (debug) {
-            pre {
-                +JSON.stringify(option.toJsObject(), null, 2)
-            }
-        }
-        window.requestAnimationFrame {
-            val chartElement = document.getElementById("echart-$elementId")!! as HTMLDivElement
-            console.log(chartElement)
-            val chart = init(chartElement)
-            chart.setOption(option.toJsObject())
-        }
-    } catch (e: Exception) {
-        console.error(e)
+  val elementId = Random.nextULong().toString()
+  try {
+    div {
+      id = "echart-$elementId"
+      style = "width: 400px; height: 400px; border: 1px solid;"
     }
+    if (debug) {
+      pre {
+        +JSON.stringify(option.toJsObject(), null, 2)
+      }
+    }
+    window.requestAnimationFrame {
+      val chartElement = document.getElementById("echart-$elementId")!! as HTMLDivElement
+      console.log(chartElement)
+      val chart = init(chartElement)
+      chart.setOption(option.toJsObject())
+    }
+  } catch (e: Exception) {
+    console.error(e)
+  }
 }
 
 fun main() {
-    console.log("HI")
-    document.getElementById("target")?.append {
-        div { h1 { +"ECharts Spec Demo" } }
-        div {
-            style = "display:flex; flex-flow: row wrap; gap:12px; align-items:flex-start; margin:0;"
-            addSpec(
-                EChartsOption.pie(
-                    values = listOf(1, 5, 30, 300),
-                    categories = listOf("A", "B", "C", "D"),
-                    title = "I like pie!",
-                ),
-            )
-            addSpec(
-                EChartsOption.pie(
-                    values = listOf(1, 5, 30, 300),
-                    categories = listOf("A", "B", "C", "D"),
-                    title = "... and donuts",
-                    donut = true,
-                ),
-            )
-            addSpec(
-                EChartsOption.horizontalBar(
-                    values = listOf(1, 2, 3, 4),
-                    categories = listOf("A", "B", "C", "D"),
-                    title = "Bar Chars",
-                ),
-            )
-            addSpec(
-                EChartsOption.verticalBarOrLine(
-                    values = listOf(1, 2, 3, 4),
-                    categories = listOf("A", "B", "C", "D"),
-                    title = "Vertical Bar",
-                ),
-            )
-            addSpec(
-                EChartsOption.verticalBarOrLine(
-                    values = listOf(4, 2, 1, 3),
-                    categories = listOf("A", "B", "C", "D"),
-                    chartType = "line",
-                    title = "Line Chart",
-                ),
-            )
-            addSpec(
-                EChartsOption.verticalBarOrLine(
-                    values = listOf(6, 2, 3, 1),
-                    categories = listOf(
-                        "2024-12-15T00:00:00Z",
-                        "2024-12-16T00:00:00Z",
-                        "2024-12-17T00:00:00Z",
-                        "2024-12-18T00:00:00Z",
-                    ),
-                    chartType = "line",
-                    temporalCategory = true,
-                    title = "Line Chart with times",
-                ),
-            )
-        }
+  console.log("HI")
+  document.getElementById("target")?.append {
+    div { h1 { +"ECharts Spec Demo" } }
+    div {
+      style = "display:flex; flex-flow: row wrap; gap:12px; align-items:flex-start; margin:0;"
+      addSpec(
+        EChartsOption.pie(
+          values = listOf(1, 5, 30, 300),
+          categories = listOf("A", "B", "C", "D"),
+          title = "I like pie!",
+        ),
+      )
+      addSpec(
+        EChartsOption.pie(
+          values = listOf(1, 5, 30, 300),
+          categories = listOf("A", "B", "C", "D"),
+          title = "... and donuts",
+          donut = true,
+        ),
+      )
+      addSpec(
+        EChartsOption.horizontalBar(
+          values = listOf(1, 2, 3, 4),
+          categories = listOf("A", "B", "C", "D"),
+          title = "Bar Chars",
+        ),
+      )
+      addSpec(
+        EChartsOption.verticalBarOrLine(
+          values = listOf(1, 2, 3, 4),
+          categories = listOf("A", "B", "C", "D"),
+          title = "Vertical Bar",
+        ),
+      )
+      addSpec(
+        EChartsOption.verticalBarOrLine(
+          values = listOf(4, 2, 1, 3),
+          categories = listOf("A", "B", "C", "D"),
+          chartType = "line",
+          title = "Line Chart",
+        ),
+      )
+      addSpec(
+        EChartsOption.verticalBarOrLine(
+          values = listOf(6, 2, 3, 1),
+          categories = listOf(
+            "2024-12-15T00:00:00Z",
+            "2024-12-16T00:00:00Z",
+            "2024-12-17T00:00:00Z",
+            "2024-12-18T00:00:00Z",
+          ),
+          chartType = "line",
+          temporalCategory = true,
+          title = "Line Chart with times",
+        ),
+      )
     }
+  }
 }
 ```
 
 ## Development status & goals
 
-This is a project that is **under construction**. I'm using it for one of our internal projects and I'm adding features
-as I go. My intention is certainly not to cover the full feature set of vega. This should not be needed with my
-`json-dsl`.
+This is a project that is **under construction**. I'm using it for one of our internal projects and I'm adding features as I go. My intention is certainly not to cover the full feature set of Apache Echarts. This should not be needed with my `json-dsl`.
 
-I'll update the README once this changes. But I'm not looking for a lot of active contributions and I may change this
-quite a bit for now.
+I'll update the README once this changes. But I'm not looking for a lot of active contributions and I may change this quite a bit for now.
 
-Even though this supports only a bare minimum of Vega features currently, the main point is that it
-uses [json-dsl](https://github.com/jillesvangurp/json-dsl), which makes it really easy to add stuff to the Json via raw
-json string literals, manipulating the underlying map, and using e.g. lists or maps in Kotlin.
+Even though this supports only a bare minimum of Vega features currently, the main point is that it uses [json-dsl](https://github.com/jillesvangurp/json-dsl), which makes it really easy to add stuff to the Json via raw json string literals, manipulating the underlying map, and using e.g. lists or maps in Kotlin. 
 
-Proper model classes may be added and expanded over time on a need to have basis. But it's useful to me even before I do
-that.
+Proper model classes may be added and expanded over time on a need to have basis. But it's useful to me even before I do that.
 
 

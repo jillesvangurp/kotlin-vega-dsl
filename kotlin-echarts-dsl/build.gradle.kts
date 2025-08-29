@@ -122,12 +122,12 @@ publishing {
     publications {
         withType<MavenPublication> {
             pom {
-                url.set("https://github.com/jillesvangurp/kotlin-vega-dsl")
+                url.set("https://github.com/jillesvangurp/kotlin-echarts-dsl")
 
                 licenses {
                     license {
                         name.set("MIT License")
-                        url.set("https://github.com/jillesvangurp/kotlin-vega-dsl/blob/master/LICENSE")
+                        url.set("https://github.com/jillesvangurp/kotlin-echarts-dsl/blob/master/LICENSE")
                     }
                 }
 
@@ -140,9 +140,9 @@ publishing {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/jillesvangurp/kotlin-vega-dsl.git")
-                    developerConnection.set("scm:git:ssh://github.com:jillesvangurp/kotlin-vega-dsl.git")
-                    url.set("https://github.com/jillesvangurp/kotlin-vega-dsl")
+                    connection.set("scm:git:git://github.com/jillesvangurp/kotlin-echarts-dsl.git")
+                    developerConnection.set("scm:git:ssh://github.com:jillesvangurp/kotlin-echarts-dsl.git")
+                    url.set("https://github.com/jillesvangurp/kotlin-echarts-dsl")
                 }
             }
         }
